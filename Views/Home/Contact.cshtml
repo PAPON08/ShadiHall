@@ -1,0 +1,104 @@
+@model ShadiHall.ViewModels.ContactViewModel
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you</p>
+    </div>
+</div>
+
+<section class="contact-section">
+    <div class="section-container">
+        <div class="contact-grid">
+            <!-- Info -->
+            <div class="contact-info">
+                <h2>Get In Touch</h2>
+                <p>Have questions about our halls or services? Our team is ready to assist you in planning the perfect event.</p>
+                <div class="contact-info-items">
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <strong>Address</strong>
+                            <p>123 Banani, Dhaka 1213, Bangladesh</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <strong>Phone</strong>
+                            <p>+880-1700-000000</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <strong>Email</strong>
+                            <p>info@shadihall.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <strong>Office Hours</strong>
+                            <p>Sat – Thu: 9:00 AM – 9:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <div class="contact-form-wrap">
+                <div class="form-card">
+                    <h2 class="form-card-title">Send Us a Message</h2>
+                    <form asp-action="Contact" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="validation-summary"></div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-input" placeholder="Your full name" />
+                                <span asp-validation-for="FullName" class="field-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" type="email" class="form-input" placeholder="your@email.com" />
+                                <span asp-validation-for="Email" class="field-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-input" placeholder="+880-XXXX-XXXXXX" />
+                                <span asp-validation-for="Phone" class="field-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Subject" class="form-label"></label>
+                                <input asp-for="Subject" class="form-input" placeholder="What is this regarding?" />
+                                <span asp-validation-for="Subject" class="field-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Message" class="form-label"></label>
+                            <textarea asp-for="Message" class="form-input" rows="5" placeholder="Write your message here..."></textarea>
+                            <span asp-validation-for="Message" class="field-error"></span>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-full">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

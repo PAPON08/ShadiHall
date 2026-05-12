@@ -1,0 +1,202 @@
+@{
+    ViewData["Title"] = "Welcome";
+    var banners = ViewBag.Banners as List<ShadiHall.Models.BannerSlide> ?? new();
+    var featuredHalls = ViewBag.FeaturedHalls as List<ShadiHall.Models.Hall> ?? new();
+    var recentReviews = ViewBag.RecentReviews as List<ShadiHall.Models.Review> ?? new();
+}
+
+<!-- Hero Banner Slider -->
+<section class="hero-slider" id="heroSlider">
+    <div class="slides-wrapper" id="slidesWrapper">
+        @if (banners.Any())
+        {
+            @foreach (var slide in banners)
+            {
+                <div class="slide" style="background-image: linear-gradient(rgba(20,10,5,0.55), rgba(20,10,5,0.55)), url('@slide.ImageUrl');">
+                    <div class="slide-content">
+                        <p class="slide-eyebrow">Premier Wedding Venue</p>
+                        <h1 class="slide-title">@slide.Title</h1>
+                        <p class="slide-subtitle">@slide.Subtitle</p>
+                        <div class="slide-actions">
+                            <a href="@slide.CtaLink" class="btn-hero btn-primary-hero">@slide.CtaText</a>
+                            <a asp-controller="Home" asp-action="Contact" class="btn-hero btn-ghost-hero">Get in Touch</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="slide slide-default">
+                <div class="slide-content">
+                    <p class="slide-eyebrow">Premier Wedding Venue</p>
+                    <h1 class="slide-title">Your Dream Wedding Awaits</h1>
+                    <p class="slide-subtitle">Elegant halls for your most special moments</p>
+                    <div class="slide-actions">
+                        <a asp-controller="Hall" asp-action="Index" class="btn-hero btn-primary-hero">Explore Halls</a>
+                        <a asp-controller="Home" asp-action="Contact" class="btn-hero btn-ghost-hero">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (banners.Count > 1)
+    {
+        <div class="slider-controls">
+            <button class="slider-btn prev" id="prevBtn" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+            <div class="slider-dots" id="sliderDots">
+                @for (int i = 0; i < banners.Count; i++)
+                {
+                    <span class="dot @(i == 0 ? "active" : "")" data-index="@i"></span>
+                }
+            </div>
+            <button class="slider-btn next" id="nextBtn" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    }
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-bar">
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Events Hosted</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Elegant Halls</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">1000+</span>
+            <span class="stat-label">Happy Families</span>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Halls -->
+<section class="section-featured">
+    <div class="section-container">
+        <div class="section-header">
+            <p class="section-eyebrow">Our Venues</p>
+            <h2 class="section-title">Featured Halls & Services</h2>
+            <p class="section-subtitle">Choose from our exquisite collection of venues, each crafted for a perfect celebration</p>
+        </div>
+
+        <div class="halls-grid">
+            @foreach (var hall in featuredHalls)
+            {
+                <div class="hall-card">
+                    <div class="hall-card-img">
+                        <img src="@hall.ImageUrl" alt="@hall.Name" onerror="this.src='/images/default-hall.svg'" />
+                        @if (hall.IsFeatured)
+                        {
+                            <span class="hall-badge">Featured</span>
+                        }
+                        @if (!hall.IsAvailable)
+                        {
+                            <span class="hall-badge badge-unavailable">Unavailable</span>
+                        }
+                    </div>
+                    <div class="hall-card-body">
+                        <h3 class="hall-card-title">@hall.Name</h3>
+                        <p class="hall-card-desc">@hall.ShortDescription</p>
+                        <div class="hall-card-meta">
+                            <span><i class="fas fa-users"></i> Up to @hall.Capacity guests</span>
+                            <span><i class="fas fa-map-marker-alt"></i> @hall.Location</span>
+                        </div>
+                        <div class="hall-card-footer">
+                            <div class="hall-price">
+                                <span class="price-label">From</span>
+                                <span class="price-amount">৳@hall.PricePerDay.ToString("N0")</span>
+                                <span class="price-unit">/day</span>
+                            </div>
+                            <a asp-controller="Hall" asp-action="Details" asp-route-id="@hall.HallId" class="btn-card">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="section-cta">
+            <a asp-controller="Hall" asp-action="Index" class="btn-primary">View All Halls</a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section-why">
+    <div class="section-container">
+        <div class="why-grid">
+            <div class="why-text">
+                <p class="section-eyebrow">Why Choose Us</p>
+                <h2 class="section-title">An Experience Beyond the Ordinary</h2>
+                <p>At Shadi Hall, we believe every celebration deserves a flawless setting. Our dedicated team works tirelessly to transform your vision into reality.</p>
+                <div class="why-features">
+                    <div class="why-feature"><i class="fas fa-star"></i><div><strong>Premium Amenities</strong><p>World-class facilities including catering kitchens, sound systems, and bridal suites.</p></div></div>
+                    <div class="why-feature"><i class="fas fa-shield-alt"></i><div><strong>Secure Bookings</strong><p>Easy online reservations with transparent pricing and instant confirmation.</p></div></div>
+                    <div class="why-feature"><i class="fas fa-headset"></i><div><strong>Dedicated Support</strong><p>Our event coordinators are available 7 days a week to assist you.</p></div></div>
+                </div>
+                <a asp-controller="Home" asp-action="About" class="btn-primary">Learn More</a>
+            </div>
+            <div class="why-image">
+                <div class="why-img-frame">
+                    <img src="/images/about-why.svg" alt="Shadi Hall Interior" onerror="this.style.background='linear-gradient(135deg,#c9a96e,#8b5e3c)'" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Reviews -->
+@if (recentReviews.Any())
+{
+    <section class="section-reviews">
+        <div class="section-container">
+            <div class="section-header">
+                <p class="section-eyebrow">Testimonials</p>
+                <h2 class="section-title">What Our Clients Say</h2>
+            </div>
+            <div class="reviews-grid">
+                @foreach (var review in recentReviews)
+                {
+                    <div class="review-card">
+                        <div class="review-stars">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="fas fa-star @(i <= review.Rating ? "star-filled" : "star-empty")"></i>
+                            }
+                        </div>
+                        <p class="review-text">"@review.Comment"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">@(review.User?.FullName?.Substring(0, 1).ToUpper() ?? "U")</div>
+                            <div>
+                                <strong>@(review.User?.FullName ?? "Guest")</strong>
+                                <span>@(review.Hall?.Name ?? "")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- CTA Banner -->
+<section class="section-cta-banner">
+    <div class="cta-banner-content">
+        <h2>Ready to Book Your Dream Hall?</h2>
+        <p>Contact us today or browse our available halls and secure your date.</p>
+        <div class="cta-banner-actions">
+            <a asp-controller="Hall" asp-action="Index" class="btn-hero btn-primary-hero">Browse Halls</a>
+            <a asp-controller="Home" asp-action="Contact" class="btn-hero btn-ghost-hero">Contact Us</a>
+        </div>
+    </div>
+</section>

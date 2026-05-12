@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="auth-section">
+    <div class="auth-container">
+        <div class="auth-card" style="text-align:center;">
+            <div style="font-size:4rem; margin-bottom:1rem;">⚠️</div>
+            <h1 class="auth-title">Something went wrong</h1>
+            <p class="auth-subtitle" style="margin-bottom:2rem;">
+                An unexpected error occurred. Please try again or go back to the homepage.
+            </p>
+            <a asp-controller="Home" asp-action="Index" class="btn-primary">Back to Home</a>
+        </div>
+    </div>
+</section>

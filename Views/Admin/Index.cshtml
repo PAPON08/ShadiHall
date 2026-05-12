@@ -1,0 +1,149 @@
+@model ShadiHall.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+        <div class="dash-profile">
+            <div class="dash-avatar">A</div>
+            <div class="dash-profile-info">
+                <strong>Administrator</strong>
+                <span>Admin Panel</span>
+            </div>
+        </div>
+        <nav class="dash-nav">
+            <a asp-controller="Admin" asp-action="Index" class="dash-nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a asp-controller="Admin" asp-action="Halls" class="dash-nav-link"><i class="fas fa-building"></i> Manage Halls</a>
+            <a asp-controller="Admin" asp-action="Reservations" class="dash-nav-link"><i class="fas fa-calendar-check"></i> Reservations</a>
+            <a asp-controller="Admin" asp-action="Users" class="dash-nav-link"><i class="fas fa-users"></i> Users</a>
+            <a asp-controller="Admin" asp-action="Messages" class="dash-nav-link"><i class="fas fa-envelope"></i> Messages <span class="badge-count">@Model.UnreadMessages</span></a>
+            <a asp-controller="Account" asp-action="Logout" class="dash-nav-link dash-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dash-page-header">
+            <h1>Dashboard Overview</h1>
+            <a asp-controller="Admin" asp-action="CreateHall" class="btn-primary btn-sm">+ Add New Hall</a>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-gold"><i class="fas fa-building"></i></div>
+                <div>
+                    <span class="admin-stat-num">@Model.TotalHalls</span>
+                    <span class="admin-stat-label">Total Halls</span>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-blue"><i class="fas fa-users"></i></div>
+                <div>
+                    <span class="admin-stat-num">@Model.TotalUsers</span>
+                    <span class="admin-stat-label">Registered Users</span>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-green"><i class="fas fa-calendar-check"></i></div>
+                <div>
+                    <span class="admin-stat-num">@Model.ConfirmedReservations</span>
+                    <span class="admin-stat-label">Confirmed</span>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-orange"><i class="fas fa-clock"></i></div>
+                <div>
+                    <span class="admin-stat-num">@Model.PendingReservations</span>
+                    <span class="admin-stat-label">Pending</span>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-purple"><i class="fas fa-money-bill-wave"></i></div>
+                <div>
+                    <span class="admin-stat-num">৳@Model.TotalRevenue.ToString("N0")</span>
+                    <span class="admin-stat-label">Total Revenue</span>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-red"><i class="fas fa-envelope"></i></div>
+                <div>
+                    <span class="admin-stat-num">@Model.UnreadMessages</span>
+                    <span class="admin-stat-label">Unread Messages</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reservations -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2>Recent Reservations</h2>
+                <a asp-controller="Admin" asp-action="Reservations" class="btn-outline-sm">View All</a>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>Hall</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.RecentReservations)
+                        {
+                            <tr>
+                                <td><strong>#@r.ReservationCode</strong></td>
+                                <td>@r.Hall?.Name</td>
+                                <td>@r.User?.FullName</td>
+                                <td>@r.EventDate.ToString("dd MMM yyyy")</td>
+                                <td>৳@r.TotalAmount.ToString("N0")</td>
+                                <td><span class="status-badge status-@r.Status.ToString().ToLower()">@r.Status</span></td>
+                                <td>
+                                    <form asp-controller="Admin" asp-action="UpdateReservationStatus" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@r.ReservationId" />
+                                        <select name="status" class="select-sm" onchange="this.form.submit()">
+                                            @foreach (var s in Enum.GetValues<ShadiHall.Models.ReservationStatus>())
+                                            {
+                                                @if (r.Status == s)
+                                                {
+                                                    <option value="@s" selected>@s</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@s">@s</option>
+                                                }
+                                            }
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Messages -->
+        @if (Model.RecentMessages.Any())
+        {
+            <div class="dash-section">
+                <div class="dash-section-header">
+                    <h2>Recent Messages</h2>
+                    <a asp-controller="Admin" asp-action="Messages" class="btn-outline-sm">View All</a>
+                </div>
+                <div class="messages-list">
+                    @foreach (var m in Model.RecentMessages)
+                    {
+                        <div class="message-preview @(!m.IsRead ? "message-unread" : "")">
+                            <div class="message-preview-from"><strong>@m.FullName</strong> <span>@m.Email</span></div>
+                            <div class="message-preview-subject">@m.Subject</div>
+                            <div class="message-preview-time">@m.SentAt.ToString("dd MMM, HH:mm")</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </main>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

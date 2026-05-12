@@ -1,0 +1,99 @@
+@model ShadiHall.ViewModels.ReservationConfirmationViewModel
+@{
+    ViewData["Title"] = "Reservation Confirmed";
+}
+
+<section class="confirmation-section">
+    <div class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="confirmation-title">Reservation Confirmed!</h1>
+            <p class="confirmation-subtitle">Thank you for choosing Shadi Hall. Your reservation has been received.</p>
+
+            <div class="confirmation-code">
+                <span class="confirmation-code-label">Reservation ID</span>
+                <span class="confirmation-code-value">#@Model.Reservation.ReservationCode</span>
+            </div>
+
+            <div class="confirmation-details">
+                <div class="confirm-row">
+                    <i class="fas fa-building"></i>
+                    <div>
+                        <span class="confirm-label">Hall</span>
+                        <strong>@Model.Hall.Name</strong>
+                    </div>
+                </div>
+                <div class="confirm-row">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <span class="confirm-label">Event Date</span>
+                        <strong>@Model.Reservation.EventDate.ToString("dddd, dd MMMM yyyy")</strong>
+                    </div>
+                </div>
+                <div class="confirm-row">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <span class="confirm-label">Time Slot</span>
+                        <strong>
+                            @(Model.Reservation.TimeSlot switch {
+                                "6hr-morning" => "Morning Slot (8AM - 2PM)",
+                                "6hr-evening" => "Evening Slot (4PM - 10PM)",
+                                _ => "Full Day (8AM - 8PM)"
+                            })
+                        </strong>
+                    </div>
+                </div>
+                <div class="confirm-row">
+                    <i class="fas fa-party-horn"></i>
+                    <div>
+                        <span class="confirm-label">Event Type</span>
+                        <strong>@Model.Reservation.EventType</strong>
+                    </div>
+                </div>
+                <div class="confirm-row">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <span class="confirm-label">Guest Count</span>
+                        <strong>@Model.Reservation.GuestCount persons</strong>
+                    </div>
+                </div>
+                <div class="confirm-row">
+                    <i class="fas fa-money-bill"></i>
+                    <div>
+                        <span class="confirm-label">Total Amount</span>
+                        <strong>৳@Model.Reservation.TotalAmount.ToString("N0")</strong>
+                    </div>
+                </div>
+                @if (Model.Payment != null)
+                {
+                    <div class="confirm-row">
+                        <i class="fas fa-receipt"></i>
+                        <div>
+                            <span class="confirm-label">Payment</span>
+                            <strong>@Model.Payment.PaymentMethod — @Model.Payment.Status</strong>
+                        </div>
+                    </div>
+                }
+                <div class="confirm-row">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <span class="confirm-label">Status</span>
+                        <strong class="status-badge status-@Model.Reservation.Status.ToString().ToLower()">@Model.Reservation.Status</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirmation-notice">
+                <i class="fas fa-envelope"></i>
+                A confirmation will be sent to <strong>@Model.Reservation.GuestEmail</strong>. Please save your Reservation ID for reference.
+            </div>
+
+            <div class="confirmation-actions">
+                <a asp-controller="User" asp-action="Dashboard" class="btn-primary">View My Reservations</a>
+                <a asp-controller="Hall" asp-action="Index" class="btn-outline-sm">Browse More Halls</a>
+            </div>
+        </div>
+    </div>
+</section>

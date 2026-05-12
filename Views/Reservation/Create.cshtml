@@ -1,0 +1,140 @@
+@model ShadiHall.ViewModels.ReservationCreateViewModel
+@{
+    ViewData["Title"] = "Reserve Hall";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Reserve a Hall</h1>
+        <p>Fill in your details to secure your booking</p>
+    </div>
+</div>
+
+<section class="form-section">
+    <div class="form-container">
+        <div class="form-layout">
+            <!-- Form -->
+            <div class="form-main">
+                <div class="form-card">
+                    <h2 class="form-card-title">Reservation Details</h2>
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="HallId" />
+                        <div asp-validation-summary="All" class="validation-summary"></div>
+
+                        <div class="form-section-group">
+                            <h3 class="form-group-title"><i class="fas fa-calendar"></i> Event Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="EventDate" class="form-label"></label>
+                                    <input asp-for="EventDate" type="date" class="form-input" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                                    <span asp-validation-for="EventDate" class="field-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="TimeSlot" class="form-label"></label>
+                                    <select asp-for="TimeSlot" class="form-input" id="timeSlotSelect">
+                                        <option value="12hr">Full Day - 12 Hours (8AM - 8PM)</option>
+                                        <option value="6hr-morning">Morning Slot - 6 Hours (8AM - 2PM)</option>
+                                        <option value="6hr-evening">Evening Slot - 6 Hours (4PM - 10PM)</option>
+                                    </select>
+                                    <span asp-validation-for="TimeSlot" class="field-error"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="EventType" class="form-label"></label>
+                                    <select asp-for="EventType" class="form-input">
+                                        <option value="">-- Select Event Type --</option>
+                                        <option>Wedding Ceremony</option>
+                                        <option>Wedding Reception</option>
+                                        <option>Engagement Ceremony</option>
+                                        <option>Mehndi Night</option>
+                                        <option>Birthday Party</option>
+                                        <option>Corporate Event</option>
+                                        <option>Other</option>
+                                    </select>
+                                    <span asp-validation-for="EventType" class="field-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="GuestCount" class="form-label"></label>
+                                    <input asp-for="GuestCount" type="number" class="form-input" placeholder="e.g. 200" min="10" max="@(Model.Hall?.Capacity ?? 1000)" />
+                                    <span asp-validation-for="GuestCount" class="field-error"></span>
+                                    @if (Model.Hall != null)
+                                    {
+                                        <small class="form-hint">Max capacity: @Model.Hall.Capacity persons</small>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-group">
+                            <h3 class="form-group-title"><i class="fas fa-user"></i> Contact Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="GuestName" class="form-label"></label>
+                                    <input asp-for="GuestName" class="form-input" placeholder="Full name" />
+                                    <span asp-validation-for="GuestName" class="field-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="GuestEmail" class="form-label"></label>
+                                    <input asp-for="GuestEmail" type="email" class="form-input" placeholder="your@email.com" />
+                                    <span asp-validation-for="GuestEmail" class="field-error"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="GuestPhone" class="form-label"></label>
+                                    <input asp-for="GuestPhone" class="form-input" placeholder="+880-XXXX-XXXXXX" />
+                                    <span asp-validation-for="GuestPhone" class="field-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="GuestAddress" class="form-label"></label>
+                                    <input asp-for="GuestAddress" class="form-input" placeholder="Your full address" />
+                                    <span asp-validation-for="GuestAddress" class="field-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SpecialRequests" class="form-label"></label>
+                            <textarea asp-for="SpecialRequests" class="form-input" rows="3" placeholder="Any special arrangements, decorations, or requirements..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <a asp-controller="Hall" asp-action="Details" asp-route-id="@Model.HallId" class="btn-outline-sm">Back</a>
+                            <button type="submit" class="btn-primary">Proceed to Payment <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            @if (Model.Hall != null)
+            {
+                <div class="form-sidebar">
+                    <div class="booking-card">
+                        <h3 class="booking-card-title">Booking Summary</h3>
+                        <img src="@Model.Hall.ImageUrl" alt="@Model.Hall.Name" class="booking-summary-img" onerror="this.src='/images/default-hall.svg'" />
+                        <h4>@Model.Hall.Name</h4>
+                        <p class="booking-summary-location"><i class="fas fa-map-marker-alt"></i> @Model.Hall.Location</p>
+                        <div class="booking-summary-details">
+                            <div class="summary-row"><span>Full Day Price:</span><strong>৳@Model.Hall.PricePerDay.ToString("N0")</strong></div>
+                            <div class="summary-row"><span>6-Hour Slot:</span><strong>৳@((Model.Hall.PricePerDay * 0.6m).ToString("N0"))</strong></div>
+                            <div class="summary-row"><span>Capacity:</span><strong>@Model.Hall.Capacity persons</strong></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+    // Update price display based on slot selection
+    document.getElementById('timeSlotSelect')?.addEventListener('change', function () {
+        // Price update handled server-side on payment page
+    });
+</script>
+}

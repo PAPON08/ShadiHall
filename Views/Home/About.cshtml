@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>About Shadi Hall</h1>
+        <p>Creating beautiful memories since 2010</p>
+    </div>
+</div>
+
+<section class="about-section">
+    <div class="section-container">
+        <div class="about-grid">
+            <div class="about-content">
+                <p class="section-eyebrow">Our Story</p>
+                <h2 class="section-title">A Legacy of Celebrations</h2>
+                <p>Founded in 2010, Shadi Hall has been the premier venue for weddings, receptions, and social events in the region. We have hosted over 500 events and helped thousands of families create lasting memories.</p>
+                <p>Our team of dedicated event coordinators, chefs, and support staff work tirelessly to ensure every event exceeds expectations. From intimate gatherings to grand celebrations, we have the perfect hall for every occasion.</p>
+                <div class="about-values">
+                    <div class="about-value"><i class="fas fa-heart"></i><div><strong>Passion</strong><p>Every event is treated with the care and dedication it deserves.</p></div></div>
+                    <div class="about-value"><i class="fas fa-gem"></i><div><strong>Excellence</strong><p>Uncompromising quality in every detail, from decor to catering.</p></div></div>
+                    <div class="about-value"><i class="fas fa-handshake"></i><div><strong>Trust</strong><p>Transparent pricing, reliable bookings, and dedicated support.</p></div></div>
+                </div>
+            </div>
+            <div class="about-image-grid">
+                <img src="/images/about1.svg" alt="Shadi Hall" class="about-img-main" onerror="this.style.background='linear-gradient(135deg,#c9a96e,#8b5e3c)'" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-cta-banner">
+    <div class="cta-banner-content">
+        <h2>Ready to Start Planning?</h2>
+        <p>Browse our halls and book your perfect venue today.</p>
+        <a asp-controller="Hall" asp-action="Index" class="btn-hero btn-primary-hero">Explore Halls</a>
+    </div>
+</section>

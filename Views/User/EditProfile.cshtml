@@ -1,0 +1,67 @@
+@model ShadiHall.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Edit Profile</h1>
+        <p>Keep your details up to date</p>
+    </div>
+</div>
+
+<section class="form-section">
+    <div class="form-container" style="max-width:600px;">
+        <div class="form-card">
+            <h2 class="form-card-title"><i class="fas fa-user-edit"></i> Update Profile</h2>
+
+            <form asp-action="EditProfile" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" name="fullName" value="@Model.FullName"
+                               class="form-input input-with-icon" placeholder="Your full name" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address <small class="form-hint" style="display:inline;">(cannot be changed)</small></label>
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="text" value="@Model.Email" class="form-input input-with-icon" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="text" name="phoneNumber" value="@Model.PhoneNumber"
+                               class="form-input input-with-icon" placeholder="+880-XXXX-XXXXXX" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-map-marker-alt input-icon"></i>
+                        <input type="text" name="address" value="@Model.Address"
+                               class="form-input input-with-icon" placeholder="Your full address" />
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a asp-controller="User" asp-action="Dashboard" class="btn-outline-sm">Cancel</a>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

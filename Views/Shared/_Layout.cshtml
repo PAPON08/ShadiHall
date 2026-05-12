@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shadi Hall</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- jQuery loaded globally so inline page scripts can use $ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="mainNav">
+    <div class="nav-container">
+        <a class="nav-logo" asp-controller="Home" asp-action="Index">
+            <span class="logo-icon">✦</span>
+            <span class="logo-text">Shadi Hall</span>
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-controller="Hall" asp-action="Index">Halls & Services</a></li>
+            <li><a asp-controller="Home" asp-action="About">About</a></li>
+            <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a asp-controller="Admin" asp-action="Index">Dashboard</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="User" asp-action="Dashboard">Dashboard</a></li>
+                }
+            }
+        </ul>
+
+        <div class="nav-auth">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span class="nav-user">
+                    <i class="fas fa-user-circle"></i>
+                    @User.Identity.Name
+                </span>
+                <a asp-controller="Account" asp-action="Logout" class="btn-nav btn-outline">Logout</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn-nav btn-outline">Login</a>
+                <a asp-controller="Account" asp-action="Register" class="btn-nav btn-filled">Register</a>
+            }
+        </div>
+    </div>
+</nav>
+
+<!-- Alert Messages -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <i class="fas fa-check-circle"></i> @TempData["Success"]
+        <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-error alert-dismissible">
+        <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+        <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+    </div>
+}
+
+<main>
+    @RenderBody()
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <div class="footer-logo">✦ Shadi Hall</div>
+            <p>Creating unforgettable moments for your most special celebrations since 2010.</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a asp-controller="Hall" asp-action="Index">Halls & Services</a></li>
+                <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <p><i class="fas fa-map-marker-alt"></i> 123 Banani, Dhaka, Bangladesh</p>
+            <p><i class="fas fa-phone"></i> +880-1700-000000</p>
+            <p><i class="fas fa-envelope"></i> info@shadihall.com</p>
+            <p><i class="fas fa-clock"></i> Sat–Thu: 9AM – 9PM</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; @DateTime.Now.Year Shadi Hall. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

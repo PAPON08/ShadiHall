@@ -1,0 +1,78 @@
+@model ShadiHall.ViewModels.ReservationCreateViewModel
+@{
+    ViewData["Title"] = "Edit Reservation";
+    var reservationId = ViewBag.ReservationId;
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Edit Reservation</h1>
+        <p>Update your booking details below</p>
+    </div>
+</div>
+
+<section class="form-section">
+    <div class="form-container">
+        <div class="form-card">
+            <h2 class="form-card-title">Update Reservation</h2>
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="reservationId" value="@reservationId" />
+                <input type="hidden" asp-for="HallId" />
+                <div asp-validation-summary="All" class="validation-summary"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="EventDate" class="form-label"></label>
+                        <input asp-for="EventDate" type="date" class="form-input" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="EventDate" class="field-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TimeSlot" class="form-label"></label>
+                        <select asp-for="TimeSlot" class="form-input">
+                            <option value="12hr">Full Day - 12 Hours (8AM - 8PM)</option>
+                            <option value="6hr-morning">Morning Slot - 6 Hours (8AM - 2PM)</option>
+                            <option value="6hr-evening">Evening Slot - 6 Hours (4PM - 10PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="EventType" class="form-label"></label>
+                        <input asp-for="EventType" class="form-input" placeholder="Wedding, Birthday, etc." />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GuestCount" class="form-label"></label>
+                        <input asp-for="GuestCount" type="number" class="form-input" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="GuestName" class="form-label"></label>
+                        <input asp-for="GuestName" class="form-input" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GuestPhone" class="form-label"></label>
+                        <input asp-for="GuestPhone" class="form-input" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SpecialRequests" class="form-label"></label>
+                    <textarea asp-for="SpecialRequests" class="form-input" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <a asp-controller="User" asp-action="Dashboard" class="btn-outline-sm">Cancel</a>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

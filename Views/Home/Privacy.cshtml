@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Privacy Policy</h1>
+        <p>How we collect, use, and protect your information</p>
+    </div>
+</div>
+
+<section class="about-section">
+    <div class="section-container" style="max-width:860px;">
+        <div class="form-card">
+            <p style="color:var(--text-muted); margin-bottom:2rem;">Last updated: @DateTime.Now.Year</p>
+
+            <h2 style="font-size:1.4rem; margin-bottom:.75rem;">1. Information We Collect</h2>
+            <p style="color:var(--text-light); margin-bottom:1.5rem;">
+                We collect information you provide directly to us when you create an account, make a reservation, or contact us. This includes your name, email address, phone number, and address.
+            </p>
+
+            <h2 style="font-size:1.4rem; margin-bottom:.75rem;">2. How We Use Your Information</h2>
+            <p style="color:var(--text-light); margin-bottom:1.5rem;">
+                We use your information to process reservations, send confirmation notices, respond to enquiries, and improve our services. We do not sell your personal data to third parties.
+            </p>
+
+            <h2 style="font-size:1.4rem; margin-bottom:.75rem;">3. Data Security</h2>
+            <p style="color:var(--text-light); margin-bottom:1.5rem;">
+                All passwords are stored as secure hashes using industry-standard algorithms. We use HTTPS encryption for all data transmission.
+            </p>
+
+            <h2 style="font-size:1.4rem; margin-bottom:.75rem;">4. Contact Us</h2>
+            <p style="color:var(--text-light); margin-bottom:0;">
+                For any privacy-related questions, please contact us at
+                <a asp-controller="Home" asp-action="Contact">our contact page</a>.
+            </p>
+        </div>
+    </div>
+</section>

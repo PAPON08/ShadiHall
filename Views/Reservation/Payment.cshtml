@@ -1,0 +1,86 @@
+@model ShadiHall.ViewModels.PaymentViewModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="page-hero page-hero-sm">
+    <div class="page-hero-content">
+        <h1>Complete Payment</h1>
+        <p>Reservation #@Model.Reservation.ReservationCode</p>
+    </div>
+</div>
+
+<section class="form-section">
+    <div class="form-container form-container-md">
+        <div class="form-layout">
+            <div class="form-main">
+                <div class="form-card">
+                    <h2 class="form-card-title"><i class="fas fa-credit-card"></i> Payment Details</h2>
+                    <form asp-action="Payment" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Reservation.ReservationId" value="@Model.Reservation.ReservationId" />
+
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Cash" checked />
+                                <span class="payment-option-label"><i class="fas fa-money-bill-wave"></i> Cash on Visit</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="bKash" />
+                                <span class="payment-option-label"><i class="fas fa-mobile-alt"></i> bKash</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Nagad" />
+                                <span class="payment-option-label"><i class="fas fa-mobile-alt"></i> Nagad</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Card" />
+                                <span class="payment-option-label"><i class="fas fa-credit-card"></i> Debit/Credit Card</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group" id="txRefGroup" style="display:none;">
+                            <label class="form-label">Transaction / Reference Number</label>
+                            <input type="text" name="TransactionRef" class="form-input" placeholder="Enter transaction reference..." />
+                        </div>
+
+                        <div class="payment-total-box">
+                            <div class="payment-total-row">
+                                <span>Hall</span>
+                                <strong>@Model.Hall.Name</strong>
+                            </div>
+                            <div class="payment-total-row">
+                                <span>Event Date</span>
+                                <strong>@Model.Reservation.EventDate.ToString("dd MMMM yyyy")</strong>
+                            </div>
+                            <div class="payment-total-row">
+                                <span>Time Slot</span>
+                                <strong>@Model.Reservation.TimeSlot</strong>
+                            </div>
+                            <div class="payment-total-row payment-total-final">
+                                <span>Total Amount</span>
+                                <strong>৳@Model.Reservation.TotalAmount.ToString("N0")</strong>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a asp-action="Create" asp-route-hallId="@Model.Reservation.HallId" class="btn-outline-sm">Back</a>
+                            <button type="submit" class="btn-primary"><i class="fas fa-check"></i> Confirm Reservation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+    document.querySelectorAll('input[name="PaymentMethod"]').forEach(r => {
+        r.addEventListener('change', function () {
+            document.getElementById('txRefGroup').style.display = this.value !== 'Cash' ? 'block' : 'none';
+        });
+    });
+</script>
+}
