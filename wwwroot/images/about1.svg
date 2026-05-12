@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1a17"/>
+      <stop offset="100%" style="stop-color:#3d2a10"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <!-- Decorative pattern -->
+  <rect x="60" y="60" width="1080" height="680" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <rect x="80" y="80" width="1040" height="640" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <!-- Center diamond ornament -->
+  <polygon points="600,260 660,320 600,380 540,320" fill="none" stroke="#c9a96e" stroke-width="2" opacity="0.6"/>
+  <polygon points="600,280 640,320 600,360 560,320" fill="#c9a96e" opacity="0.15"/>
+  <!-- Horizontal rule -->
+  <line x1="400" y1="410" x2="800" y2="410" stroke="#c9a96e" stroke-width="1" opacity="0.5"/>
+  <!-- Title text -->
+  <text x="600" y="460" font-family="Georgia, serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle" opacity="0.95">Our Beautiful Venue</text>
+  <text x="600" y="510" font-family="Arial, sans-serif" font-size="22" fill="#c9a96e" text-anchor="middle" opacity="0.8">Est. 2010 · Dhaka, Bangladesh</text>
+  <!-- Corner ornaments -->
+  <text x="100" y="120" font-family="Georgia, serif" font-size="28" fill="#c9a96e" opacity="0.3">✦</text>
+  <text x="1080" y="120" font-family="Georgia, serif" font-size="28" fill="#c9a96e" opacity="0.3">✦</text>
+  <text x="100" y="720" font-family="Georgia, serif" font-size="28" fill="#c9a96e" opacity="0.3">✦</text>
+  <text x="1080" y="720" font-family="Georgia, serif" font-size="28" fill="#c9a96e" opacity="0.3">✦</text>
+</svg>
